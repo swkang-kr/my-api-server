@@ -1,7 +1,7 @@
 plugins {
     java
-    id("org.springframework.boot") version "3.2.5"
-    id("io.spring.dependency-management") version "1.1.4"
+    id("org.springframework.boot") version "3.3.6"
+    id("io.spring.dependency-management") version "1.1.7"
 }
 
 group = "com.example"
@@ -75,8 +75,16 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.springframework.amqp:spring-rabbit-test")
     testImplementation("io.projectreactor:reactor-test")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
+
+    // Suppress JVM CDS warning
+    jvmArgs("-Xshare:off")
+}
+
+springBoot {
+    mainClass.set("com.example.api.ApiApplication")
 }

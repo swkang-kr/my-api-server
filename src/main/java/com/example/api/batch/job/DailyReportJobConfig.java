@@ -17,7 +17,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
-public class DailyReportJob {
+public class DailyReportJobConfig {
 
     private final JobRepository jobRepository;
     private final PlatformTransactionManager transactionManager;
