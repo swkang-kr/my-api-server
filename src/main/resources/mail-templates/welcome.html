@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Email</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+        }
+        .content {
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 0 0 5px 5px;
+        }
+        .button {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>환영합니다!</h1>
+    </div>
+    <div class="content">
+        <h2>안녕하세요, {{name}}님!</h2>
+        <p>My API Server에 가입해주셔서 진심으로 감사합니다.</p>
+        <p>저희 서비스를 통해 더 나은 경험을 하시길 바랍니다.</p>
+        <p>지금 바로 시작해보세요!</p>
+        <a href="https://example.com/app" class="button">서비스 시작하기</a>
+    </div>
+    <div class="footer">
+        <p>&copy; 2024 My API Server. All rights reserved.</p>
+        <p>서울특별시 강남구 테헤란로 123</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "template_code": "WELCOME_001",
+  "template_name": "회원가입 환영",
+  "content": "안녕하세요, #{name}님!\n\n#{appName}에 가입해주셔서 감사합니다.\n가입일: #{date}\n\n지금 바로 서비스를 시작해보세요!",
+  "buttons": [
+    {
+      "type": "WL",
+      "name": "서비스 시작하기",
+      "link_mobile": "https://example.com/app",
+      "link_pc": "https://example.com/web"
+    }
+  ],
+  "variables": {
+    "name": "사용자 이름",
+    "appName": "서비스 이름",
+    "date": "가입 날짜"
+  }
+}
