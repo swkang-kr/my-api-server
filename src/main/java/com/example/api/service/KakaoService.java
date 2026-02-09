@@ -6,8 +6,8 @@ import com.example.api.kakao.dto.FriendtalkRequest;
 import com.example.api.kakao.dto.KakaoResponse;
 import com.example.api.messaging.dto.KakaoMessage;
 import com.example.api.messaging.producer.MessageProducer;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -17,15 +17,20 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class KakaoService {
 
     private final KakaoApiClient kakaoApiClient;
-    private final MessageProducer messageProducer;
+
+    @Autowired(required = false)
+    private MessageProducer messageProducer;
 
     @Value("${kakao.api.sender-key}")
     private String senderKey;
+
+    public KakaoService(KakaoApiClient kakaoApiClient) {
+        this.kakaoApiClient = kakaoApiClient;
+    }
 
     /**
      * 알림톡 발송 (동기)
@@ -77,7 +82,11 @@ public class KakaoService {
                 .buttons(convertToButtonDto(buttons))
                 .build();
 
-        messageProducer.sendKakaoMessage(message);
+        if (messageProducer != null) {
+            messageProducer.sendKakaoMessage(message);
+        } else {
+            log.warn("MessageProducer is not available. Message not sent: {}", message);
+        }
     }
 
     /**
@@ -135,7 +144,11 @@ public class KakaoService {
                 .webUrl(webUrl)
                 .build();
 
-        messageProducer.sendKakaoMessage(message);
+        if (messageProducer != null) {
+            messageProducer.sendKakaoMessage(message);
+        } else {
+            log.warn("MessageProducer is not available. Message not sent: {}", message);
+        }
     }
 
     /**

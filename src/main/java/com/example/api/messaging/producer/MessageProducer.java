@@ -6,9 +6,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 @Service
+@ConditionalOnClass(RabbitTemplate.class)
+@ConditionalOnProperty(prefix = "spring.rabbitmq", name = "host")
 @RequiredArgsConstructor
 @Slf4j
 public class MessageProducer {

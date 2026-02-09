@@ -39,3 +39,10 @@ out/
 ### Application ###
 logs/
 *.log
+app.log
+
+### Sensitive Configuration ###
+.env
+application-local.properties
+*-secret.properties
+src/main/resources/application-prod.properties

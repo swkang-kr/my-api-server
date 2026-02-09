@@ -337,7 +337,7 @@ logging.file.max-history=30
 ### 4. application-dev.properties
 ```properties
 # DataSource
-spring.datasource.url=jdbc:postgresql://localhost:5432/mydb_dev
+spring.datasource.url=jdbc:postgresql://localhost:5432/railway
 spring.datasource.username=postgres
 spring.datasource.password=postgres
 

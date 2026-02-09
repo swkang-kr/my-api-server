@@ -77,10 +77,10 @@ src/
 
 ```bash
 # PostgreSQL 데이터베이스 생성
-createdb mydb_dev
+createdb railway
 
 # 스키마 생성
-psql -d mydb_dev -f src/main/resources/schema.sql
+psql -d railway -f src/main/resources/schema.sql
 ```
 
 ### 3. 환경 설정
@@ -89,7 +89,7 @@ psql -d mydb_dev -f src/main/resources/schema.sql
 
 ```properties
 # Database
-spring.datasource.url=jdbc:postgresql://localhost:5432/mydb_dev
+spring.datasource.url=jdbc:postgresql://localhost:5432/railway
 spring.datasource.username=your_username
 spring.datasource.password=your_password
 
@@ -221,6 +221,38 @@ API 문서는 다음 URL에서 확인할 수 있습니다:
 
 ## 배포
 
+### 환경 변수 설정
+
+**로컬 개발:**
+```bash
+# .env.example을 복사
+cp .env.example .env
+
+# .env 파일 수정 후 실행
+./gradlew bootRun
+```
+
+**Railway 배포:**
+```bash
+# Railway CLI 설치
+npm install -g @railway/cli
+
+# 로그인
+railway login
+
+# 환경 변수 설정 (자동)
+./railway-setup.sh  # Linux/Mac
+railway-setup.bat   # Windows
+
+# 또는 Railway Dashboard에서 수동 설정
+# Variables 탭에서 환경 변수 추가
+```
+
+**상세 가이드:**
+- 📚 [배포 가이드](DEPLOYMENT.md)
+- 🚂 [Railway 배포](docs/railway-deployment.md)
+- 🔒 [보안 설정](SETUP.md)
+
 ### 프로덕션 빌드
 
 ```bash
@@ -230,16 +262,20 @@ API 문서는 다음 URL에서 확인할 수 있습니다:
 # 빌드된 JAR는 build/libs/ 디렉토리에 생성됩니다
 ```
 
-### 프로덕션 실행
+### Docker 배포
 
 ```bash
-# 환경변수 설정 후 실행
-export DB_URL=jdbc:postgresql://prod-db:5432/mydb
-export DB_USERNAME=prod_user
-export DB_PASSWORD=prod_password
-export JWT_SECRET=your-production-secret-key
+# Docker 이미지 빌드
+docker build -t my-api-server .
 
-java -jar -Dspring.profiles.active=prod build/libs/my-api-server-0.0.1-SNAPSHOT.jar
+# 환경 변수와 함께 실행
+docker run -d \
+  -e DB_URL="jdbc:postgresql://..." \
+  -e DB_USERNAME="postgres" \
+  -e DB_PASSWORD="password" \
+  -e JWT_SECRET="your-secret" \
+  -p 8080:8080 \
+  my-api-server
 ```
 
 ## 문제 해결

@@ -3,20 +3,25 @@ package com.example.api.service;
 import com.example.api.messaging.dto.EmailMessage;
 import com.example.api.messaging.producer.MessageProducer;
 import jakarta.mail.internet.MimeMessage;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class EmailService {
 
     private final JavaMailSender mailSender;
-    private final MessageProducer messageProducer;
+
+    @Autowired(required = false)
+    private MessageProducer messageProducer;
+
+    public EmailService(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
 
     @Value("${mail.from.address}")
     private String fromAddress;
@@ -56,8 +61,13 @@ public class EmailService {
                 .content(content)
                 .build();
 
-        messageProducer.sendEmailMessage(emailMessage);
-        log.info("Email message queued for: {}", to);
+        if (messageProducer != null) {
+            messageProducer.sendEmailMessage(emailMessage);
+            log.info("Email message queued for: {}", to);
+        } else {
+            log.warn("MessageProducer is not available. Sending email synchronously instead.");
+            sendEmail(to, subject, content);
+        }
     }
 
     /**
