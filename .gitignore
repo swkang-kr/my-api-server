@@ -46,3 +46,4 @@ app.log
 application-local.properties
 *-secret.properties
 src/main/resources/application-prod.properties
+/.claude/settings.local.json
