@@ -2,6 +2,8 @@ package com.example.api.config;
 
 import org.springframework.batch.core.configuration.support.DefaultBatchConfiguration;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 
 /**
@@ -14,14 +16,21 @@ import javax.sql.DataSource;
 public class BatchConfig extends DefaultBatchConfiguration {
 
     private final DataSource dataSource;
+    private final PlatformTransactionManager transactionManager;
 
     public BatchConfig(DataSource dataSource) {
         this.dataSource = dataSource;
+        this.transactionManager = new DataSourceTransactionManager(dataSource);
     }
 
     @Override
     protected DataSource getDataSource() {
         return dataSource;
+    }
+
+    @Override
+    protected PlatformTransactionManager getTransactionManager() {
+        return transactionManager;
     }
 
 }
