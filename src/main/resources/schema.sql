@@ -1,5 +1,5 @@
--- 사용자 테이블
-CREATE TABLE users (
+-- Users table
+CREATE TABLE IF NOT EXISTS users (
     id BIGSERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE,
@@ -13,14 +13,14 @@ CREATE TABLE users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_users_email ON users(email);
-CREATE INDEX idx_users_username ON users(username);
-CREATE INDEX idx_users_phone ON users(phone);
-CREATE INDEX idx_users_status ON users(status);
-CREATE INDEX idx_users_provider ON users(provider, provider_id);
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_users_username ON users(username);
+CREATE INDEX IF NOT EXISTS idx_users_phone ON users(phone);
+CREATE INDEX IF NOT EXISTS idx_users_status ON users(status);
+CREATE INDEX IF NOT EXISTS idx_users_provider ON users(provider, provider_id);
 
--- 카카오톡 메시지 발송 로그
-CREATE TABLE kakao_message_log (
+-- Kakao message send log
+CREATE TABLE IF NOT EXISTS kakao_message_log (
     id BIGSERIAL PRIMARY KEY,
     user_id BIGINT,
     message_type VARCHAR(20) NOT NULL,
@@ -38,13 +38,13 @@ CREATE TABLE kakao_message_log (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
-CREATE INDEX idx_kakao_log_user_id ON kakao_message_log(user_id);
-CREATE INDEX idx_kakao_log_status ON kakao_message_log(status);
-CREATE INDEX idx_kakao_log_sent_at ON kakao_message_log(sent_at);
-CREATE INDEX idx_kakao_log_request_id ON kakao_message_log(request_id);
+CREATE INDEX IF NOT EXISTS idx_kakao_log_user_id ON kakao_message_log(user_id);
+CREATE INDEX IF NOT EXISTS idx_kakao_log_status ON kakao_message_log(status);
+CREATE INDEX IF NOT EXISTS idx_kakao_log_sent_at ON kakao_message_log(sent_at);
+CREATE INDEX IF NOT EXISTS idx_kakao_log_request_id ON kakao_message_log(request_id);
 
--- Spring Session 테이블
-CREATE TABLE SPRING_SESSION (
+-- Spring Session tables
+CREATE TABLE IF NOT EXISTS SPRING_SESSION (
     PRIMARY_ID CHAR(36) NOT NULL,
     SESSION_ID CHAR(36) NOT NULL,
     CREATION_TIME BIGINT NOT NULL,
@@ -55,11 +55,11 @@ CREATE TABLE SPRING_SESSION (
     CONSTRAINT SPRING_SESSION_PK PRIMARY KEY (PRIMARY_ID)
 );
 
-CREATE UNIQUE INDEX SPRING_SESSION_IX1 ON SPRING_SESSION (SESSION_ID);
-CREATE INDEX SPRING_SESSION_IX2 ON SPRING_SESSION (EXPIRY_TIME);
-CREATE INDEX SPRING_SESSION_IX3 ON SPRING_SESSION (PRINCIPAL_NAME);
+CREATE UNIQUE INDEX IF NOT EXISTS SPRING_SESSION_IX1 ON SPRING_SESSION (SESSION_ID);
+CREATE INDEX IF NOT EXISTS SPRING_SESSION_IX2 ON SPRING_SESSION (EXPIRY_TIME);
+CREATE INDEX IF NOT EXISTS SPRING_SESSION_IX3 ON SPRING_SESSION (PRINCIPAL_NAME);
 
-CREATE TABLE SPRING_SESSION_ATTRIBUTES (
+CREATE TABLE IF NOT EXISTS SPRING_SESSION_ATTRIBUTES (
     SESSION_PRIMARY_ID CHAR(36) NOT NULL,
     ATTRIBUTE_NAME VARCHAR(200) NOT NULL,
     ATTRIBUTE_BYTES BYTEA NOT NULL,
@@ -68,8 +68,8 @@ CREATE TABLE SPRING_SESSION_ATTRIBUTES (
         REFERENCES SPRING_SESSION(PRIMARY_ID) ON DELETE CASCADE
 );
 
--- Batch 처리용 임시 테이블
-CREATE TABLE user_import_temp (
+-- Batch processing temporary table
+CREATE TABLE IF NOT EXISTS user_import_temp (
     id BIGSERIAL PRIMARY KEY,
     username VARCHAR(50),
     email VARCHAR(100),
@@ -80,8 +80,8 @@ CREATE TABLE user_import_temp (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Batch 처리 결과 로그 테이블
-CREATE TABLE batch_job_log (
+-- Batch job result log table
+CREATE TABLE IF NOT EXISTS batch_job_log (
     id BIGSERIAL PRIMARY KEY,
     job_name VARCHAR(100),
     job_execution_id BIGINT,
@@ -94,8 +94,8 @@ CREATE TABLE batch_job_log (
     error_message TEXT
 );
 
--- 이메일 발송 로그 테이블
-CREATE TABLE email_log (
+-- Email send log table
+CREATE TABLE IF NOT EXISTS email_log (
     id BIGSERIAL PRIMARY KEY,
     user_id BIGINT,
     recipient VARCHAR(100) NOT NULL,
